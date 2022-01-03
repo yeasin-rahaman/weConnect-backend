@@ -49,6 +49,13 @@ async function run() {
       const profile = await usersCollection.findOne(query)
       res.json(profile);
     })
+
+    // new user input 
+    app.post("/newuser",async(req,res)=>{
+      const newUser = req.body;
+      const result = await usersCollection.insertOne(newUser);
+      res.json(result)
+    })
   
   } finally {
     // await client.close();
