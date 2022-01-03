@@ -37,6 +37,14 @@ async function run() {
       const result = await cursor.toArray();
       res.json(result);
     })
+    // service delete api 
+    app.delete("/services/:id",async(req,res)=>{
+      const {id} = req.params;
+      const query = {_id: ObjectId(id)}
+      const cursor = await serviceCollection.deleteOne(query);
+      console.log(cursor);
+      res.json(cursor)
+    })
 
     // Users API 
     app.get("/users",async(req,res)=>{
@@ -53,11 +61,27 @@ async function run() {
       res.json(profile);
     })
 
+    // users by category
+    app.get("/users/category/:categoryName",async(req,res)=>{
+      const {categoryName} = req.params;
+      const query = { category: categoryName };
+      const cursor = usersCollection.find(query);
+      const result = await cursor.toArray();
+      res.json(result)
+    })
+
     // new user input 
     app.post("/newuser",async(req,res)=>{
       const newUser = req.body;
       const result = await usersCollection.insertOne(newUser);
       res.json(result)
+    })
+
+    app.delete("/users/:id",async(req,res)=>{
+      const {id} = req.params;
+      const query = {_id: ObjectId(id)}
+      const result = await usersCollection.deleteOne(query)
+      res.json(result);
     })
   
   } finally {
