@@ -23,8 +23,8 @@ async function run() {
     const serviceCollection = database.collection("services");
     const usersCollection = database.collection("allUsers");
 
-  //  Service API 
-    app.get("/services",async(req,res)=>{
+    //  Service API 
+    app.get("/services", async (req, res) => {
       const query = {}
       const cursor = serviceCollection.find(query);
       const services = await cursor.toArray();
@@ -32,39 +32,39 @@ async function run() {
     })
 
     // service heighlight api 
-    app.get("/serviceheighlight",async(req,res)=>{
+    app.get("/serviceheighlight", async (req, res) => {
       const query = {}
       const cursor = serviceCollection.find(query).limit(4);
       const result = await cursor.toArray();
       res.json(result);
     })
     // service delete api 
-    app.delete("/services/:id",async(req,res)=>{
-      const {id} = req.params;
-      const query = {_id: ObjectId(id)}
+    app.delete("/services/:id", async (req, res) => {
+      const { id } = req.params;
+      const query = { _id: ObjectId(id) }
       const cursor = await serviceCollection.deleteOne(query);
       console.log(cursor);
       res.json(cursor)
     })
 
     // Users API 
-    app.get("/users",async(req,res)=>{
+    app.get("/users", async (req, res) => {
       const query = {}
       const cursor = usersCollection.find(query);
       const users = await cursor.toArray();
       res.json(users);
     })
     // user by id 
-    app.get("/users/:id",async(req,res)=>{
-      const {id} = req.params;
-      const query = {_id: ObjectId(id)}
+    app.get("/users/:id", async (req, res) => {
+      const { id } = req.params;
+      const query = { _id: ObjectId(id) }
       const profile = await usersCollection.findOne(query)
       res.json(profile);
     })
 
     // users by category
-    app.get("/users/category/:categoryName",async(req,res)=>{
-      const {categoryName} = req.params;
+    app.get("/users/category/:categoryName", async (req, res) => {
+      const { categoryName } = req.params;
       const query = { category: categoryName };
       const cursor = usersCollection.find(query);
       const result = await cursor.toArray();
@@ -72,19 +72,19 @@ async function run() {
     })
 
     // new user input 
-    app.post("/newuser",async(req,res)=>{
+    app.post("/newuser", async (req, res) => {
       const newUser = req.body;
       const result = await usersCollection.insertOne(newUser);
       res.json(result)
     })
 
-    app.delete("/users/:id",async(req,res)=>{
-      const {id} = req.params;
-      const query = {_id: ObjectId(id)}
+    app.delete("/users/:id", async (req, res) => {
+      const { id } = req.params;
+      const query = { _id: ObjectId(id) }
       const result = await usersCollection.deleteOne(query)
       res.json(result);
     })
-  
+
   } finally {
     // await client.close();
   }
@@ -98,5 +98,3 @@ app.get("/", (req, res) => {
 app.listen(port, () => {
   console.log(`Server Running at ${port}`)
 })
-
-
